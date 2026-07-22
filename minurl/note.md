@@ -30,3 +30,22 @@
 
 # short url
 # map the short url -> long url and redict
+
+
+# onmultiple inheritance then super key how works
+
+
+
+
+# short code
+
+# generate 6 random character
+# Hashing
+
+
+# 12301 = 1*10^4 + 2*10^3 + 3*10^2 + 0*10^1 + 1*10^0
+
+37 35 48 32 6
+# 96471231 = 37*62^5 + 35*62^4 + 48*62^3 +  
+
+

@@ -3,6 +3,9 @@ from rest_framework.viewsets import ModelViewSet
 
 from urlshortener.models import Link
 from urlshortener.serializers import LinkSerializer,CreateLinkSerializer
+from django.shortcuts import redirect, get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
 # Create your views here.
 
 
@@ -18,4 +21,16 @@ class LinkViewset(ModelViewSet):
     
     def get_queryset(self):
         return Link.objects.filter(owner=self.request.user)
+
+
+class RedirectViewset(APIView):
+    def get(self, request, short_code):
+        link = get_object_or_404(Link, short_code=short_code)
+        if link.is_Valid():
+            link.clicks_count += 1
+            link.save()
+            return redirect(link.original_url, permanent=False)
+        else:
+            return Response({"error": "This link is inactive or expired."}, status=400)
+       
     
