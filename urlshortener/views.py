@@ -1,5 +1,7 @@
 from rest_framework.generics import CreateAPIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import  permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from urlshortener.models import Link
 from urlshortener.serializers import LinkSerializer,CreateLinkSerializer
@@ -11,15 +13,19 @@ from rest_framework.response import Response
 
 
 class CreateLink(CreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Link.objects.all()
     serializer_class = CreateLinkSerializer
     
     
 class LinkViewset(ModelViewSet):
-    
+    permission_classes = [IsAuthenticated]
     serializer_class = LinkSerializer
     
     def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Link.objects.all()
         return Link.objects.filter(owner=self.request.user)
 
 

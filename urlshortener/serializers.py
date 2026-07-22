@@ -1,6 +1,8 @@
+
 from rest_framework import serializers
 from .models import Link
 from urlshortener.utils import convert_to_base_62
+from core.serializers import UserSerializer
 
 class CreateLinkSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,6 +11,10 @@ class CreateLinkSerializer(serializers.ModelSerializer):
             "original_url"
         ]
     def create(self, validated_data):
+        # request = self.context["request"]
+        # validated_data["owner"] = request.user
+        
+        # we can use both
         validated_data["owner"]=self.context.get("request").user
         instance = Link.objects.create(**validated_data)
         short_code = convert_to_base_62(instance.id)
@@ -19,6 +25,7 @@ class CreateLinkSerializer(serializers.ModelSerializer):
     
     
 class LinkSerializer(serializers.ModelSerializer):
+    owner = serializers.CharField(source="owner.username", read_only=True)
     original_url = serializers.CharField(read_only=True)
     short_code = serializers.CharField(read_only=True)
     clicks_count = serializers.IntegerField(read_only=True)
