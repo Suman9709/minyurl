@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import  permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.throttling import UserRateThrottle
 
 from urlshortener.models import Link
 from urlshortener.serializers import LinkSerializer,CreateLinkSerializer
@@ -19,6 +20,7 @@ from rest_framework.response import Response
 #     serializer_class = CreateLinkSerializer
     
 class CreateLink(CreateAPIView):
+    
     permission_classes = [IsAuthenticated]
     queryset = Link.objects.all()
     serializer_class = CreateLinkSerializer
@@ -47,6 +49,7 @@ class LinkViewset(ModelViewSet):
 
 
 class RedirectViewset(APIView):
+    throttle_classes = [UserRateThrottle]
     def get(self, request, short_code):
         link = get_object_or_404(Link, short_code=short_code)
         if link.is_Valid():
