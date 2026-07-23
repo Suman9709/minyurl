@@ -27,7 +27,6 @@ class CreateLinkSerializer(serializers.ModelSerializer):
 class LinkSerializer(serializers.ModelSerializer):
     owner = serializers.CharField(source="owner.username", read_only=True)
     original_url = serializers.CharField(read_only=True)
-    short_code = serializers.CharField(read_only=True)
     clicks_count = serializers.IntegerField(read_only=True)
     class Meta:
         model = Link
@@ -36,6 +35,7 @@ class LinkSerializer(serializers.ModelSerializer):
             "original_url",
             "short_code",
             "clicks_count",
+            "owner",
             "expires_at",
             "is_Active",
             "created_at"

@@ -26,6 +26,9 @@ SECRET_KEY = 'django-insecure-+r_q^*27y4belo&sxry$v$*ommyo&d0ungtyp)6q0nhjd2ww)o
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Local React/Vue app 
+]
 
 
 # Application definition
@@ -39,13 +42,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-     'rest_framework_simplejwt.token_blacklist',
+    'rest_framework_simplejwt.token_blacklist',
+    "corsheaders",
     'core',
     'urlshortener',
     
 ]
 
+
+CORS_ALLOW_CREDENTIALS = True
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

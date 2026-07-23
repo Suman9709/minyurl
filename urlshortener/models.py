@@ -10,7 +10,9 @@ class Link(models.Model):
     original_url = models.URLField(max_length=2000)
     short_code = models.CharField(max_length=6, unique=True, db_index=True)
     clicks_count = models.PositiveIntegerField(default=0)
-    expires_at = models.DateTimeField(null = True, blank=True)
+    expires_at = models.DateTimeField(
+        default=timezone.now() + timezone.timedelta(days=2)
+    )
     is_Active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
